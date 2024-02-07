@@ -1,5 +1,5 @@
 # Go HTMX Render
-An example of using Go + HTMX deployed on [Render](https://render.com)
+An example of using Go + HTMX deployed on [Render](https://render.com). You can see it live [here](https://go-htmx-app-7kor.onrender.com/).
 
 Prerequisites to run the project:
 - [Go 1.21](https://go.dev/dl) or later
