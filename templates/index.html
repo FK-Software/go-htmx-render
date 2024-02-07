@@ -1,0 +1,56 @@
+{{ define "index" }}
+<html>
+	<head>
+		<script src="/static/js/htmx.min.js"></script>
+		<title>Go HTMX Render</title>
+	</head>
+	<body>
+		<h2 style="margin-bottom: 0px;">List of tasks</h2>
+		<p style="margin-top: 0px;">
+			Feel free to edit, delete and create tasks.
+			<br />
+			<small>
+				To edit just type on one of the task inputs, 
+				and it will be updated after you stop typing.
+			</small>
+		</p>
+		<div 
+			id="tasks" 
+			hx-get="/tasks" 
+			hx-trigger="load, get-tasks from:body" 
+			hx-target="this" 
+			hx-swap="innerHTML">
+		</div>
+		<hr />
+		{{ template "create-task" . }}
+	</body>
+</html>
+{{ end }}
+
+{{ define "create-task" }}
+<form hx-post="/task/create" hx-target="#tasks" hx-swap="innerHTML">
+	<input name="title" type="text" placeholder="Deez nuts...">
+	<button type="submit">Add</button>
+</form>
+{{ end }}
+
+{{ block "tasks" . }}
+	{{ range .tasks }}
+	<div>
+		<input 
+			hx-put="/task/edit?id={{ .Id }}"
+			hx-trigger="keyup changed delay:1s"
+			hx-target="#tasks"
+			hx-swap="innerHTML"
+			name="title" 
+			type="text" 
+			value="{{ .Title }}">
+		<button
+			hx-delete="/task/delete?id={{ .Id }}"
+			hx-target="#tasks"
+			hx-swap="innerHTML">
+			&#10005;
+		</button>
+	</div>
+	{{ end }}
+{{ end }}
